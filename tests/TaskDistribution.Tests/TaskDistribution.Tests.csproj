@@ -24,6 +24,7 @@
     <ProjectReference Include="..\..\src\TaskDistribution.Domain\TaskDistribution.Domain.csproj" />
     <ProjectReference Include="..\..\src\TaskDistribution.Data\TaskDistribution.Data.csproj" />
     <ProjectReference Include="..\..\src\TaskDistribution.Business\TaskDistribution.Business.csproj" />
+    <ProjectReference Include="..\..\src\TaskDistribution.Web\TaskDistribution.Web.csproj" />
   </ItemGroup>
 
 </Project>

@@ -27,4 +27,13 @@ public static class DependencyInjection
 
         return services;
     }
+
+    /// <summary>
+    /// Veritabanını kullanıma hazırlar (migration'ları uygular).
+    /// Web katmanı Data katmanını doğrudan çağırmasın diye araya konmuş bir kapı.
+    /// </summary>
+    public static void VeritabaniniHazirla(this IServiceProvider serviceProvider)
+    {
+        serviceProvider.VeritabaniniGuncelle();
+    }
 }

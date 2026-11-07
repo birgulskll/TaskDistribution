@@ -1,0 +1,29 @@
+@model List<Islem>
+@{
+    ViewData["Title"] = "İşlemler";
+}
+
+<h1 class="h3 mb-1">İşlemler</h1>
+<p class="text-muted">
+    Görev oluştururken bu işlemlerden biri seçilir. Görevin zorluk seviyesi, seçilen işlemin zorluğundan otomatik alınır.
+</p>
+
+<div class="table-responsive">
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>İşlem</th>
+                <th>Zorluk</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var islem in Model)
+            {
+                <tr>
+                    <td>@islem.Ad</td>
+                    <td><partial name="_ZorlukRozeti" model="islem.Zorluk" /></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

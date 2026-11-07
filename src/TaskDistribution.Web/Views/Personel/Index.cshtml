@@ -1,0 +1,65 @@
+@model List<Personel>
+@{
+    ViewData["Title"] = "Personeller";
+    int aktifSayisi = Model.Count(p => p.AktifMi);
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h1 class="h3 mb-0">Personeller</h1>
+        <small class="text-muted">Toplam @Model.Count personel, @aktifSayisi aktif</small>
+    </div>
+    <a class="btn btn-primary" asp-action="Ekle">+ Yeni Personel</a>
+</div>
+
+@if (Model.Count == 0)
+{
+    <div class="alert alert-info">Henüz personel yok.</div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Ad Soyad</th>
+                    <th>Durum</th>
+                    <th class="text-end">İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var personel in Model)
+                {
+                    <tr class="@(personel.AktifMi ? "" : "text-muted")">
+                        <td>@personel.TamAd</td>
+                        <td>
+                            @if (personel.AktifMi)
+                            {
+                                <span class="badge bg-success">Aktif</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Pasif</span>
+                            }
+                        </td>
+                        <td class="text-end">
+                            <a class="btn btn-sm btn-outline-primary" asp-action="Duzenle" asp-route-id="@personel.Id">Düzenle</a>
+
+                            @* Durum değiştirme veriyi değiştirdiği için link değil, POST formu *@
+                            <form asp-action="AktiflikDegistir" asp-route-id="@personel.Id" method="post" class="d-inline">
+                                @if (personel.AktifMi)
+                                {
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary">Pasif yap</button>
+                                }
+                                else
+                                {
+                                    <button type="submit" class="btn btn-sm btn-outline-success">Aktif yap</button>
+                                }
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

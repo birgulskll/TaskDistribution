@@ -1,0 +1,4 @@
+@* Zorluk seviyesini renkli bir rozet olarak gösterir. Kullanım: <partial name="_ZorlukRozeti" model="3" /> *@
+@model int
+
+<span class="badge @ZorlukGorunumu.CssSinifi(Model)">@Model · @ZorlukGorunumu.Etiket(Model)</span>

@@ -1,15 +1,32 @@
+using TaskDistribution.Business;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// ---------- 1. Servisleri kaydet ----------
+
+// MVC: Controller'lar ve View'lar
 builder.Services.AddControllersWithViews();
+
+// Veritabanı bağlantı bilgisini appsettings.json dosyasından oku
+string connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+    ?? throw new InvalidOperationException(
+        "appsettings.json içinde 'ConnectionStrings:DefaultConnection' ayarı bulunamadı.");
+
+// Business ve Data katmanlarının tüm servisleri tek satırla (Aşama 6'da yazdığımız extension method)
+builder.Services.AddBusinessLayer(connectionString);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// ---------- 2. Veritabanını hazırla ----------
+
+// Veritabanı dosyası yoksa oluşturur, migration'ları ve seed data'yı uygular.
+app.Services.VeritabaniniHazirla();
+
+// ---------- 3. İstek hattını (middleware) ayarla ----------
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 

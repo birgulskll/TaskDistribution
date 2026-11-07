@@ -1,0 +1,16 @@
+@* Ekle ve Düzenle sayfalarının ortak form alanları *@
+@model PersonelFormViewModel
+
+<div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+<div class="mb-3">
+    <label asp-for="Ad" class="form-label"></label>
+    <input asp-for="Ad" class="form-control" autofocus />
+    <span asp-validation-for="Ad" class="text-danger small"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="Soyad" class="form-label"></label>
+    <input asp-for="Soyad" class="form-control" />
+    <span asp-validation-for="Soyad" class="text-danger small"></span>
+</div>

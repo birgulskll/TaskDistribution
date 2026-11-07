@@ -1,0 +1,21 @@
+@model PersonelFormViewModel
+@{
+    ViewData["Title"] = "Yeni Personel";
+}
+
+<h1 class="h3 mb-3">Yeni Personel</h1>
+
+<div class="card" style="max-width: 32rem;">
+    <div class="card-body">
+        <form asp-action="Ekle" method="post">
+            <partial name="_PersonelForm" model="Model" />
+
+            <button type="submit" class="btn btn-primary">Kaydet</button>
+            <a class="btn btn-link" asp-action="Index">Vazgeç</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
