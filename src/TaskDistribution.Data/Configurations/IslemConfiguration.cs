@@ -21,7 +21,7 @@ public class IslemConfiguration : IEntityTypeConfiguration<Islem>
 
         builder.Property(i => i.Ad)
             .IsRequired()
-            .HasMaxLength(100);
+            .HasMaxLength(AlanUzunluklari.IslemAd);
 
         // Aynı isimde iki işlem olmasın.
         builder.HasIndex(i => i.Ad)

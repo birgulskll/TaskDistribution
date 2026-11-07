@@ -20,10 +20,10 @@ public class TaskItemConfiguration : IEntityTypeConfiguration<TaskItem>
 
         builder.Property(g => g.Baslik)
             .IsRequired()
-            .HasMaxLength(200);
+            .HasMaxLength(AlanUzunluklari.GorevBaslik);
 
         builder.Property(g => g.Aciklama)
-            .HasMaxLength(1000);   // IsRequired yok: açıklama boş olabilir
+            .HasMaxLength(AlanUzunluklari.GorevAciklama);   // IsRequired yok: açıklama boş olabilir
 
         builder.Property(g => g.Zorluk)
             .IsRequired();

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using TaskDistribution.Domain.Constants;
 using TaskDistribution.Domain.Entities;
 
 namespace TaskDistribution.Data.Configurations;
@@ -17,11 +18,11 @@ public class PersonelConfiguration : IEntityTypeConfiguration<Personel>
 
         builder.Property(p => p.Ad)
             .IsRequired()
-            .HasMaxLength(50);
+            .HasMaxLength(AlanUzunluklari.PersonelAd);
 
         builder.Property(p => p.Soyad)
             .IsRequired()
-            .HasMaxLength(50);
+            .HasMaxLength(AlanUzunluklari.PersonelSoyad);
 
         // Not: AktifMi için HasDefaultValue(true) KULLANMIYORUZ. EF Core, false değerini
         // "boş" sanıp veritabanı varsayılanını (true) yazardı; pasif personel eklenemezdi.
