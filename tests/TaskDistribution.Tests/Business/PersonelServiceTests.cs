@@ -116,4 +116,62 @@ public class PersonelServiceTests : IDisposable
 
         Assert.False(sonuc.Basarili);
     }
+
+    // ---------- Silme (CRUD'un "D" harfi) ----------
+
+    [Fact]
+    public async Task SilAsync_GorevGecmisiYoksa_PersoneliSiler()
+    {
+        using (var context = _veritabani.ContextOlustur())
+        {
+            var sonuc = await ServisOlustur(context).SilAsync(8);
+
+            Assert.True(sonuc.Basarili);
+            Assert.Equal("Emre Aydın silindi.", sonuc.Mesaj);
+        }
+
+        using (var context = _veritabani.ContextOlustur())
+        {
+            Assert.Null(context.Personeller.Find(8));
+        }
+    }
+
+    [Fact]
+    public async Task SilAsync_GorevGecmisiVarsa_SilmezVePasifYapmayiOnerir()
+    {
+        // Arrange: 1 numaralı personele (Ayşe) bir görev ver
+        using (var context = _veritabani.ContextOlustur())
+        {
+            context.Gorevler.Add(TestVerisi.Gorev(personelId: 1, islemId: 1, zorluk: 1));
+            await context.SaveChangesAsync();
+        }
+
+        // Act
+        using (var context = _veritabani.ContextOlustur())
+        {
+            var sonuc = await ServisOlustur(context).SilAsync(1);
+
+            // Assert
+            Assert.False(sonuc.Basarili);
+            Assert.Contains("görev geçmişi olduğu için silinemez", sonuc.Mesaj);
+            Assert.Contains("pasif", sonuc.Mesaj);
+        }
+
+        using (var context = _veritabani.ContextOlustur())
+        {
+            Assert.NotNull(context.Personeller.Find(1));   // Hâlâ yerinde
+            Assert.Single(context.Gorevler);              // Görev geçmişi bozulmadı
+        }
+    }
+
+    [Fact]
+    public async Task SilAsync_OlmayanPersonel_HataDoner()
+    {
+        using var context = _veritabani.ContextOlustur();
+
+        var sonuc = await ServisOlustur(context).SilAsync(999);
+
+        Assert.False(sonuc.Basarili);
+        Assert.Equal("Personel bulunamadı.", sonuc.Mesaj);
+    }
 }

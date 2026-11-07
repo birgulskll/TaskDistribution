@@ -96,6 +96,32 @@ public class PersonelController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    // GET /Personel/Sil/5 → "Emin misiniz?" onay sayfası (henüz hiçbir şey silinmez)
+    public async Task<IActionResult> Sil(int id)
+    {
+        var personel = await _personelService.GetirAsync(id);
+        if (personel is null)
+        {
+            return NotFound();
+        }
+
+        return View(personel);
+    }
+
+    // POST /Personel/Sil/5 → onaylandıktan sonra asıl silme
+    // C#'ta aynı parametrelerle (int id) iki "Sil" metodu yazılamaz. Bu yüzden metodun adı SilOnayla,
+    // ama [ActionName("Sil")] sayesinde adresi yine /Personel/Sil/5.
+    [HttpPost]
+    [ActionName("Sil")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> SilOnayla(int id)
+    {
+        var sonuc = await _personelService.SilAsync(id);
+
+        TempData[sonuc.Basarili ? Bildirim.Basari : Bildirim.Hata] = sonuc.Mesaj;
+        return RedirectToAction(nameof(Index));
+    }
+
     // POST /Personel/AktiflikDegistir/5 → aktif ise pasif, pasif ise aktif yap
     [HttpPost]
     [ValidateAntiForgeryToken]

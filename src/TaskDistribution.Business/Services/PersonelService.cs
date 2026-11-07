@@ -85,6 +85,27 @@ public class PersonelService : IPersonelService
             : ServisSonucu.Basari($"{personel.TamAd} pasif yapıldı. Bu personele artık yeni görev atanmayacak.");
     }
 
+    public async Task<ServisSonucu> SilAsync(int id)
+    {
+        var personel = await _personelRepository.GetirAsync(id);
+        if (personel is null)
+        {
+            return ServisSonucu.Hata("Personel bulunamadı.");
+        }
+
+        // Kural: görev geçmişi olan personel silinmez. Silinseydi geçmiş görevler sahipsiz kalırdı
+        // ve görev dağılımı tablosu yanlış olurdu. (Veritabanındaki Restrict kuralı da buna izin vermez.)
+        if (await _personelRepository.GoreviVarMiAsync(id))
+        {
+            return ServisSonucu.Hata(
+                $"{personel.TamAd} adlı personelin görev geçmişi olduğu için silinemez. Bunun yerine pasif yapabilirsiniz.");
+        }
+
+        await _personelRepository.SilAsync(personel);
+
+        return ServisSonucu.Basari($"{personel.TamAd} silindi.");
+    }
+
     /// <summary>
     /// Ad ve soyad kurallarını kontrol eder. Sorun varsa hata mesajını, yoksa null döndürür.
     /// </summary>

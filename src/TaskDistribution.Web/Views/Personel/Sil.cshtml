@@ -1,0 +1,28 @@
+@model Personel
+@{
+    ViewData["Title"] = "Personel Sil";
+}
+
+<h1 class="h3 mb-3">Personel Sil</h1>
+
+<div class="card border-danger" style="max-width: 32rem;">
+    <div class="card-body">
+        <p class="mb-2">Bu personeli silmek istediğinden emin misin?</p>
+
+        <dl class="row mb-3">
+            <dt class="col-4">Ad Soyad</dt>
+            <dd class="col-8">@Model.TamAd</dd>
+            <dt class="col-4">Durum</dt>
+            <dd class="col-8">@(Model.AktifMi ? "Aktif" : "Pasif")</dd>
+        </dl>
+
+        <div class="alert alert-warning small mb-3">
+            Bu işlem geri alınamaz. Görev geçmişi olan personel silinemez; bu durumda personeli pasif yapabilirsin.
+        </div>
+
+        <form asp-action="Sil" asp-route-id="@Model.Id" method="post">
+            <button type="submit" class="btn btn-danger">Evet, sil</button>
+            <a class="btn btn-link" asp-action="Index">Vazgeç</a>
+        </form>
+    </div>
+</div>

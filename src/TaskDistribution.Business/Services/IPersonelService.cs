@@ -15,4 +15,10 @@ public interface IPersonelService
 
     /// <summary>Aktif personeli pasif, pasif personeli aktif yapar.</summary>
     Task<ServisSonucu> AktiflikDurumunuDegistirAsync(int id);
+
+    /// <summary>
+    /// Personeli siler. Görev geçmişi olan personel silinmez (geçmiş bozulmasın diye);
+    /// bu durumda pasif yapılması önerilir.
+    /// </summary>
+    Task<ServisSonucu> SilAsync(int id);
 }

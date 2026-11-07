@@ -30,4 +30,6 @@ public class SahtePersonelService : IPersonelService
     public Task<ServisSonucu> GuncelleAsync(int id, string? ad, string? soyad) => Task.FromResult(DonecekSonuc);
 
     public Task<ServisSonucu> AktiflikDurumunuDegistirAsync(int id) => Task.FromResult(DonecekSonuc);
+
+    public Task<ServisSonucu> SilAsync(int id) => Task.FromResult(DonecekSonuc);
 }

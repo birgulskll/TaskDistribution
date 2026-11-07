@@ -58,4 +58,16 @@ public class PersonelRepository : IPersonelRepository
         _context.Personeller.Update(personel);
         await _context.SaveChangesAsync();
     }
+
+    public async Task<bool> GoreviVarMiAsync(int personelId)
+    {
+        // AnyAsync: "en az bir kayıt var mı?" Tüm görevleri getirmez, sadece evet/hayır sorar.
+        return await _context.Gorevler.AnyAsync(g => g.AtananPersonelId == personelId);
+    }
+
+    public async Task SilAsync(Personel personel)
+    {
+        _context.Personeller.Remove(personel);
+        await _context.SaveChangesAsync();
+    }
 }

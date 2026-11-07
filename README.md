@@ -26,7 +26,7 @@ Görev oluşturulduğu anda sistem, kurallara göre en uygun personeli seçer. A
   - 🟡 Kural esnetilerek yapılan atama
   - 🔴 Aktif personel olmadığı için atama yapılamadı (görev kaydedilmez)
 - **Görev dağılımı tablosu:** Ana sayfada her personelin her zorlukta kaç görev aldığı, toplam görev sayısı ve son görevi görünür.
-- **Personel yönetimi:** Ekleme, düzenleme, aktif/pasif yapma. Pasif personele görev atanmaz. Görev geçmişi korunsun diye personel silinmez.
+- **Personel yönetimi (CRUD):** Listeleme, ekleme, düzenleme, silme ve aktif/pasif yapma. Pasif personele görev atanmaz. Görev geçmişi bozulmasın diye görevi olan personel silinemez; bunun yerine pasif yapılabilir.
 - **İşlem listesi:** Görevlerde seçilebilecek iş türleri ve zorlukları.
 - **Loglama:** Her atama ve kuralın esnetildiği durumlar sunucu kayıtlarına yazılır.
 
@@ -43,7 +43,7 @@ Görev oluşturulduğu anda sistem, kurallara göre en uygun personeli seçer. A
 
 ## Kurulum ve Çalıştırma
 
-**Gereksinim:** [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
+**Gereksinim:** [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0). Proje .NET 9 veya daha yeni bir SDK ile de derlenebilir; çalıştırmak için bilgisayarda .NET 8 runtime bulunmalıdır.
 
 ```bash
 git clone https://github.com/birgulskll/TaskDistribution.git
@@ -204,14 +204,14 @@ erDiagram
 
 ## Testler
 
-Toplam **86 test** vardır.
+Toplam **95 test** vardır.
 
 | Alan | Test sayısı | Neyi kapsıyor? |
 |---|---|---|
 | Domain | 22 | Zorluk sınırları (1–5), entity varsayılanları ve ilişkiler |
-| Data | 17 | Seed data, check constraint, silme koruması, repository sorguları (bellek içi SQLite) |
-| Business | 35 | Atama algoritmasının her kuralı, servis doğrulamaları, uçtan uca dağıtım, özet tablosu, DI kayıtları |
-| Web | 12 | Controller davranışları: doğrulama, yönlendirme, başarı/uyarı/hata mesajları (sahte servislerle) |
+| Data | 19 | Seed data, check constraint, silme koruması, repository sorguları (bellek içi SQLite) |
+| Business | 38 | Atama algoritmasının her kuralı, servis doğrulamaları, personel silme kuralı, uçtan uca dağıtım, özet tablosu, DI kayıtları |
+| Web | 16 | Controller davranışları: doğrulama, silme onayı, yönlendirme, başarı/uyarı/hata mesajları (sahte servislerle) |
 
 Öne çıkan testler:
 

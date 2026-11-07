@@ -22,4 +22,9 @@ public interface IPersonelRepository
     Task EkleAsync(Personel personel);
 
     Task GuncelleAsync(Personel personel);
+
+    /// <summary>Personele hiç görev atanmış mı? Görev geçmişi olan personel silinmemeli.</summary>
+    Task<bool> GoreviVarMiAsync(int personelId);
+
+    Task SilAsync(Personel personel);
 }

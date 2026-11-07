@@ -95,4 +95,46 @@ public class PersonelControllerTests
         Assert.Equal("Personel bulunamadı.", _controller.TempData[Bildirim.Hata]);
         Assert.Null(_controller.TempData[Bildirim.Basari]);
     }
+
+    [Fact]
+    public async Task SilGet_OnaySayfasiniPersonelleGosterir()
+    {
+        _servis.Personeller.Add(new Personel { Id = 3, Ad = "Zeynep", Soyad = "Demir" });
+
+        var sonuc = await _controller.Sil(3);
+
+        var view = Assert.IsType<ViewResult>(sonuc);
+        Assert.Equal("Zeynep Demir", Assert.IsType<Personel>(view.Model).TamAd);
+    }
+
+    [Fact]
+    public async Task SilGet_OlmayanPersonel_404Doner()
+    {
+        var sonuc = await _controller.Sil(999);
+
+        Assert.IsType<NotFoundResult>(sonuc);
+    }
+
+    [Fact]
+    public async Task SilPost_Basariliysa_YesilMesajlaListeyeYonlendirir()
+    {
+        _servis.DonecekSonuc = ServisSonucu.Basari("Emre Aydın silindi.");
+
+        var sonuc = await _controller.SilOnayla(8);
+
+        var yonlendirme = Assert.IsType<RedirectToActionResult>(sonuc);
+        Assert.Equal(nameof(PersonelController.Index), yonlendirme.ActionName);
+        Assert.Equal("Emre Aydın silindi.", _controller.TempData[Bildirim.Basari]);
+    }
+
+    [Fact]
+    public async Task SilPost_GorevGecmisiVarsa_KirmiziMesajBirakir()
+    {
+        _servis.DonecekSonuc = ServisSonucu.Hata("Ayşe Yılmaz adlı personelin görev geçmişi olduğu için silinemez.");
+
+        await _controller.SilOnayla(1);
+
+        Assert.Contains("silinemez", (string)_controller.TempData[Bildirim.Hata]!);
+        Assert.Null(_controller.TempData[Bildirim.Basari]);
+    }
 }

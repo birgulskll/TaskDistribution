@@ -117,4 +117,39 @@ public class PersonelRepositoryTests : IDisposable
         Assert.Equal(2, aktifler.Single(p => p.Id == 1).Gorevler.Count);
         Assert.Empty(aktifler.Single(p => p.Id == 3).Gorevler);
     }
+
+    [Fact]
+    public async Task GoreviVarMiAsync_GorevAlanIcinTrueAlmayanIcinFalseDondurur()
+    {
+        using (var context = _veritabani.ContextOlustur())
+        {
+            context.Gorevler.Add(TestVerisi.Gorev(personelId: 1, islemId: 1, zorluk: 1));
+            await context.SaveChangesAsync();
+        }
+
+        using (var context = _veritabani.ContextOlustur())
+        {
+            var repository = new PersonelRepository(context);
+
+            Assert.True(await repository.GoreviVarMiAsync(1));
+            Assert.False(await repository.GoreviVarMiAsync(2));
+        }
+    }
+
+    [Fact]
+    public async Task SilAsync_PersoneliVeritabanindanSiler()
+    {
+        using (var context = _veritabani.ContextOlustur())
+        {
+            var repository = new PersonelRepository(context);
+            var personel = (await repository.GetirAsync(8))!;
+            await repository.SilAsync(personel);
+        }
+
+        using (var context = _veritabani.ContextOlustur())
+        {
+            Assert.Null(await new PersonelRepository(context).GetirAsync(8));
+            Assert.Equal(7, context.Personeller.Count());
+        }
+    }
 }
