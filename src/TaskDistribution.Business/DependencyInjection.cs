@@ -24,6 +24,7 @@ public static class DependencyInjection
         services.AddScoped<IPersonelService, PersonelService>();
         services.AddScoped<IIslemService, IslemService>();
         services.AddScoped<IGorevService, GorevService>();
+        services.AddScoped<IOzetService, OzetService>();
 
         return services;
     }

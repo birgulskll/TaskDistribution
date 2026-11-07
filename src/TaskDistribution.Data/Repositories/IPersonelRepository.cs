@@ -13,6 +13,9 @@ public interface IPersonelRepository
     /// <summary>Sadece aktif personeller, görev geçmişleriyle birlikte. Atama algoritması bunu kullanacak.</summary>
     Task<List<Personel>> AktifleriGorevleriyleGetirAsync();
 
+    /// <summary>Tüm personeller (aktif ve pasif), görev geçmişleriyle birlikte. Özet tablosu bunu kullanacak.</summary>
+    Task<List<Personel>> TumunuGorevleriyleGetirAsync();
+
     /// <summary>Id ile tek personel getirir; bulamazsa null döner.</summary>
     Task<Personel?> GetirAsync(int id);
 

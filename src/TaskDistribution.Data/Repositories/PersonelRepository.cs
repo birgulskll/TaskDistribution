@@ -33,6 +33,15 @@ public class PersonelRepository : IPersonelRepository
             .ToListAsync();
     }
 
+    public async Task<List<Personel>> TumunuGorevleriyleGetirAsync()
+    {
+        return await _context.Personeller
+            .Include(p => p.Gorevler)
+            .OrderBy(p => p.Ad)
+            .ThenBy(p => p.Soyad)
+            .ToListAsync();
+    }
+
     public async Task<Personel?> GetirAsync(int id)
     {
         return await _context.Personeller.FindAsync(id);

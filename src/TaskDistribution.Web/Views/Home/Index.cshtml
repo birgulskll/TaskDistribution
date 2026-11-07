@@ -1,31 +1,101 @@
-﻿@{
-    ViewData["Title"] = "Ana Sayfa";
+﻿@using TaskDistribution.Business.Models
+@using TaskDistribution.Domain.Constants
+@model List<PersonelOzeti>
+@{
+    ViewData["Title"] = "Görev Dağılımı";
+
+    int toplamGorev = Model.Sum(o => o.ToplamGorev);
+    int aktifPersonel = Model.Count(o => o.AktifMi);
+
+    // 1..5 zorluk seviyeleri (tablonun sütunları)
+    var zorluklar = Enumerable.Range(ZorlukSeviyesi.EnDusuk, ZorlukSeviyesi.EnYuksek - ZorlukSeviyesi.EnDusuk + 1).ToList();
 }
 
-<div class="py-4">
-    <h1 class="display-6">Task Distribution</h1>
-    <p class="lead text-muted">
-        Görevleri zorluk seviyelerine göre personellere otomatik ve adil şekilde dağıtan uygulama.
-    </p>
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+    <div>
+        <h1 class="h3 mb-0">Görev Dağılımı</h1>
+        <small class="text-muted">Her personelin hangi zorlukta kaç görev aldığını gösterir.</small>
+    </div>
+    <a class="btn btn-primary" asp-controller="Gorev" asp-action="Olustur">+ Yeni Görev</a>
 </div>
 
-<div class="row g-3">
-    <div class="col-md-6">
-        <div class="card h-100">
-            <div class="card-body">
-                <h5 class="card-title">Personeller</h5>
-                <p class="card-text text-muted">Personel ekle, düzenle, aktif veya pasif yap. Pasif personele görev atanmaz.</p>
-                <a class="btn btn-primary" asp-controller="Personel" asp-action="Index">Personellere git</a>
-            </div>
-        </div>
+<div class="row g-3 mb-4">
+    <div class="col-sm-4">
+        <div class="card text-center"><div class="card-body">
+            <div class="display-6">@toplamGorev</div><div class="text-muted">Toplam görev</div>
+        </div></div>
     </div>
-    <div class="col-md-6">
-        <div class="card h-100">
-            <div class="card-body">
-                <h5 class="card-title">İşlemler</h5>
-                <p class="card-text text-muted">Görev oluştururken seçilecek iş türleri ve zorluk seviyeleri.</p>
-                <a class="btn btn-outline-primary" asp-controller="Islem" asp-action="Index">İşlemlere git</a>
-            </div>
-        </div>
+    <div class="col-sm-4">
+        <div class="card text-center"><div class="card-body">
+            <div class="display-6">@aktifPersonel</div><div class="text-muted">Aktif personel</div>
+        </div></div>
+    </div>
+    <div class="col-sm-4">
+        <div class="card text-center"><div class="card-body">
+            <div class="display-6">@(Model.Count - aktifPersonel)</div><div class="text-muted">Pasif personel</div>
+        </div></div>
     </div>
 </div>
+
+<div class="table-responsive">
+    <table class="table table-bordered align-middle text-center">
+        <thead class="table-light">
+            <tr>
+                <th class="text-start">Personel</th>
+                @foreach (var zorluk in zorluklar)
+                {
+                    <th><partial name="_ZorlukRozeti" model="zorluk" /></th>
+                }
+                <th>Toplam</th>
+                <th>Son görev</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ozet in Model)
+            {
+                <tr class="@(ozet.AktifMi ? "" : "text-muted")">
+                    <td class="text-start">
+                        @ozet.TamAd
+                        @if (!ozet.AktifMi)
+                        {
+                            <span class="badge bg-secondary ms-1">Pasif</span>
+                        }
+                    </td>
+                    @foreach (var zorluk in zorluklar)
+                    {
+                        int adet = ozet.ZorlukSayilari[zorluk];
+                        <td class="@(adet == 0 ? "text-muted" : "fw-semibold")">@adet</td>
+                    }
+                    <td class="fw-bold">@ozet.ToplamGorev</td>
+                    <td class="small text-nowrap">
+                        @if (ozet.SonGorevZorlugu is int sonZorluk)
+                        {
+                            <partial name="_ZorlukRozeti" model="sonZorluk" />
+                            <div class="text-muted">@ozet.SonAtanmaTarihi?.ToString("dd.MM.yyyy HH:mm")</div>
+                        }
+                        else
+                        {
+                            <span class="text-muted">—</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot class="table-light fw-bold">
+            <tr>
+                <td class="text-start">Toplam</td>
+                @foreach (var zorluk in zorluklar)
+                {
+                    <td>@Model.Sum(o => o.ZorlukSayilari[zorluk])</td>
+                }
+                <td>@toplamGorev</td>
+                <td></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+<p class="small text-muted">
+    Atama kuralları: Son görevi aynı zorlukta olan personel elenir; kalanlar arasından o zorlukta en az görev almış olan seçilir.
+    Eşitlikte toplam görev sayısına, son atanma tarihine ve Id'ye bakılır. Uygun aday yoksa kural esnetilir ve uyarı gösterilir.
+</p>

@@ -1,0 +1,63 @@
+@model GorevFormViewModel
+@{
+    ViewData["Title"] = "Yeni Görev";
+}
+
+<h1 class="h3 mb-1">Yeni Görev</h1>
+<p class="text-muted">Görev kaydedildiği anda, kurallara göre en uygun personele otomatik olarak atanır.</p>
+
+<div class="card" style="max-width: 40rem;">
+    <div class="card-body">
+        <form asp-action="Olustur" method="post">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+            <div class="mb-3">
+                <label asp-for="Baslik" class="form-label"></label>
+                <input asp-for="Baslik" class="form-control" autofocus />
+                <span asp-validation-for="Baslik" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Aciklama" class="form-label"></label>
+                <span class="text-muted small">(isteğe bağlı)</span>
+                <textarea asp-for="Aciklama" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Aciklama" class="text-danger small"></span>
+            </div>
+
+            <div class="row g-3 mb-3">
+                <div class="col-sm-8">
+                    <label asp-for="IslemId" class="form-label"></label>
+                    @* Her seçeneğe zorluğu "data-zorluk" olarak ekliyoruz; JavaScript bunu okuyup gösterecek *@
+                    <select asp-for="IslemId" class="form-select" id="islemSecimi">
+                        <option value="">-- İşlem seçin --</option>
+                        @foreach (var islem in Model.Islemler)
+                        {
+                            <option value="@islem.Id"
+                                    data-zorluk="@islem.Zorluk"
+                                    data-etiket="@ZorlukGorunumu.Etiket(islem.Zorluk)"
+                                    data-css="@ZorlukGorunumu.CssSinifi(islem.Zorluk)">@islem.Ad</option>
+                        }
+                    </select>
+                    <span asp-validation-for="IslemId" class="text-danger small"></span>
+                </div>
+
+                <div class="col-sm-4">
+                    @* Zorluk sadece GÖSTERİLİR: "name" özelliği yok, bu yüzden sunucuya hiç gönderilmez *@
+                    <label class="form-label">Zorluk</label>
+                    <div class="form-control bg-light" aria-live="polite">
+                        <span id="zorlukGosterimi" class="text-muted">İşlem seçilince görünür</span>
+                    </div>
+                    <div class="form-text">İşlemden otomatik alınır, değiştirilemez.</div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Görevi Oluştur ve Ata</button>
+            <a class="btn btn-link" asp-action="Index">Vazgeç</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/gorev.js" asp-append-version="true"></script>
+}

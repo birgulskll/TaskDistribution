@@ -29,6 +29,7 @@ public class DependencyInjectionTests
         Assert.IsType<IslemService>(scope.ServiceProvider.GetRequiredService<IIslemService>());
         Assert.IsType<GorevService>(scope.ServiceProvider.GetRequiredService<IGorevService>());
         Assert.IsType<AtamaService>(scope.ServiceProvider.GetRequiredService<IAtamaService>());
+        Assert.IsType<OzetService>(scope.ServiceProvider.GetRequiredService<IOzetService>());
     }
 
     [Fact]

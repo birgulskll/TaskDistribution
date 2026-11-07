@@ -1,14 +1,24 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using TaskDistribution.Business.Services;
 using TaskDistribution.Web.Models;
 
 namespace TaskDistribution.Web.Controllers;
 
 public class HomeController : Controller
 {
-    public IActionResult Index()
+    private readonly IOzetService _ozetService;
+
+    public HomeController(IOzetService ozetService)
     {
-        return View();
+        _ozetService = ozetService;
+    }
+
+    // GET / → görev dağılımı özet tablosu
+    public async Task<IActionResult> Index()
+    {
+        var ozetler = await _ozetService.PersonelOzetleriniGetirAsync();
+        return View(ozetler);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
