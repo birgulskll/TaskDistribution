@@ -9,8 +9,10 @@ public class DependencyInjectionTests
     [Fact]
     public void AddBusinessLayer_TumServisleriEksiksizKaydeder()
     {
-        // Arrange: Web projesinin Aşama 7'de yapacağı kaydın aynısı
+        // Arrange: Web projesindeki kaydın aynısı.
+        // AddLogging: web uygulamasında logger'ı .NET kendisi kaydeder; testte bunu biz yapıyoruz.
         var services = new ServiceCollection();
+        services.AddLogging();
         services.AddBusinessLayer("DataSource=:memory:");
 
         // ValidateOnBuild: kayıtlarda eksik bir bağımlılık varsa hemen hata ver.
@@ -36,6 +38,7 @@ public class DependencyInjectionTests
     public void AtamaService_SingletonOldugu_IcinHepAyniNesneDoner()
     {
         var services = new ServiceCollection();
+        services.AddLogging();
         services.AddBusinessLayer("DataSource=:memory:");
         using var provider = services.BuildServiceProvider();
 

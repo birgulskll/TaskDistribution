@@ -1,3 +1,4 @@
+using TaskDistribution.Business.Helpers;
 using TaskDistribution.Business.Models;
 using TaskDistribution.Data.Repositories;
 using TaskDistribution.Domain.Constants;
@@ -41,11 +42,8 @@ public class OzetService : IOzetService
             zorlukSayilari[zorluk] = gruplar.GetValueOrDefault(zorluk, 0);
         }
 
-        // Son görev: AtamaService'teki kuralla aynı (önce tarih, eşitse Id)
-        var sonGorev = personel.Gorevler
-            .OrderByDescending(g => g.OlusturmaTarihi)
-            .ThenByDescending(g => g.Id)
-            .FirstOrDefault();
+        // Son görev: AtamaService ile birebir aynı kural (ortak GorevGecmisi sınıfından)
+        var sonGorev = GorevGecmisi.SonGorev(personel);
 
         return new PersonelOzeti
         {

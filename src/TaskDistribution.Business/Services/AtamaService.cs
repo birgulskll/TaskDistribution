@@ -1,3 +1,4 @@
+using TaskDistribution.Business.Helpers;
 using TaskDistribution.Business.Models;
 using TaskDistribution.Domain.Constants;
 using TaskDistribution.Domain.Entities;
@@ -62,22 +63,10 @@ public class AtamaService : IAtamaService
 
     // ---------------- Yardımcı metotlar ----------------
 
-    /// <summary>
-    /// Personelin en son aldığı görev. Önce tarihe, tarihler eşitse Id'ye bakılır.
-    /// Hiç görevi yoksa null döner.
-    /// </summary>
-    private static TaskItem? SonGorev(Personel personel)
-    {
-        return personel.Gorevler
-            .OrderByDescending(g => g.OlusturmaTarihi)
-            .ThenByDescending(g => g.Id)
-            .FirstOrDefault();
-    }
-
     private static int? SonGorevZorlugu(Personel personel)
     {
         // "?." operatörü: SonGorev null ise hata vermeden null döndürür.
-        return SonGorev(personel)?.Zorluk;
+        return GorevGecmisi.SonGorev(personel)?.Zorluk;
     }
 
     /// <summary>
@@ -86,7 +75,7 @@ public class AtamaService : IAtamaService
     /// </summary>
     private static DateTime SonAtanmaTarihi(Personel personel)
     {
-        return SonGorev(personel)?.OlusturmaTarihi ?? DateTime.MinValue;
+        return GorevGecmisi.SonGorev(personel)?.OlusturmaTarihi ?? DateTime.MinValue;
     }
 
     private static int BuZorluktakiGorevSayisi(Personel personel, int zorluk)

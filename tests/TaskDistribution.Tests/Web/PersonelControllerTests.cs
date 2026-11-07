@@ -95,12 +95,4 @@ public class PersonelControllerTests
         Assert.Equal("Personel bulunamadı.", _controller.TempData[Bildirim.Hata]);
         Assert.Null(_controller.TempData[Bildirim.Basari]);
     }
-
-    /// <summary>TempData'nın çalışması için gereken, hiçbir şey saklamayan sahte sağlayıcı.</summary>
-    private sealed class BosTempDataProvider : ITempDataProvider
-    {
-        public IDictionary<string, object> LoadTempData(HttpContext context) => new Dictionary<string, object>();
-
-        public void SaveTempData(HttpContext context, IDictionary<string, object> values) { }
-    }
 }

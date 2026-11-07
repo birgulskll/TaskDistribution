@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using TaskDistribution.Business.Models;
 using TaskDistribution.Data.Repositories;
 using TaskDistribution.Domain.Constants;
@@ -15,17 +16,20 @@ public class GorevService : IGorevService
     private readonly IIslemRepository _islemRepository;
     private readonly IPersonelRepository _personelRepository;
     private readonly IAtamaService _atamaService;
+    private readonly ILogger<GorevService> _logger;
 
     public GorevService(
         ITaskItemRepository gorevRepository,
         IIslemRepository islemRepository,
         IPersonelRepository personelRepository,
-        IAtamaService atamaService)
+        IAtamaService atamaService,
+        ILogger<GorevService> logger)
     {
         _gorevRepository = gorevRepository;
         _islemRepository = islemRepository;
         _personelRepository = personelRepository;
         _atamaService = atamaService;
+        _logger = logger;
     }
 
     public Task<List<TaskItem>> TumunuGetirAsync()
@@ -70,6 +74,10 @@ public class GorevService : IGorevService
         if (!atama.Basarili)
         {
             // Örneğin "Sistemde aktif personel bulunmuyor." Görev KAYDEDİLMEZ.
+            _logger.LogWarning(
+                "Görev atanamadı: '{Baslik}' (zorluk {Zorluk}). Neden: {Mesaj}",
+                baslik, zorluk, atama.Mesaj);
+
             return ServisSonucu.Hata(atama.Mesaj);
         }
 
@@ -86,7 +94,21 @@ public class GorevService : IGorevService
 
         await _gorevRepository.EkleAsync(gorev);
 
-        // 5. Sonucu bildir: kural esnetildiyse uyarı, değilse başarı
+        // 5. Kayıt tut (log): sorun çıktığında "hangi görev kime, neden atandı?" sorusunun cevabı
+        if (atama.KuralEsnetildi)
+        {
+            _logger.LogWarning(
+                "Görev {GorevId} '{Baslik}' (zorluk {Zorluk}) KURAL ESNETİLEREK personel {PersonelId} kişisine atandı.",
+                gorev.Id, gorev.Baslik, gorev.Zorluk, gorev.AtananPersonelId);
+        }
+        else
+        {
+            _logger.LogInformation(
+                "Görev {GorevId} '{Baslik}' (zorluk {Zorluk}) personel {PersonelId} kişisine atandı.",
+                gorev.Id, gorev.Baslik, gorev.Zorluk, gorev.AtananPersonelId);
+        }
+
+        // 6. Sonucu bildir: kural esnetildiyse uyarı, değilse başarı
         return atama.KuralEsnetildi
             ? ServisSonucu.Uyari(atama.Mesaj)
             : ServisSonucu.Basari(atama.Mesaj);

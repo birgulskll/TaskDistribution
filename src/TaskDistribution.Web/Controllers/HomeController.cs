@@ -21,6 +21,13 @@ public class HomeController : Controller
         return View(ozetler);
     }
 
+    // GET /Home/Durum/404 → Program.cs'teki UseStatusCodePagesWithReExecute buraya yönlendirir
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    public IActionResult Durum(int id)
+    {
+        return View(id);   // Sayfa, durum koduna (404, 400...) göre mesaj seçer
+    }
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {

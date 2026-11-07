@@ -1,0 +1,22 @@
+@model int
+@{
+    bool bulunamadi = Model == 404;
+    ViewData["Title"] = bulunamadi ? "Sayfa Bulunamadı" : "Bir Sorun Oluştu";
+}
+
+<div class="text-center py-5">
+    <div class="display-1 text-muted">@Model</div>
+
+    @if (bulunamadi)
+    {
+        <h1 class="h3">Aradığın sayfa bulunamadı</h1>
+        <p class="text-muted">Adres yanlış yazılmış olabilir ya da aradığın kayıt artık yok.</p>
+    }
+    else
+    {
+        <h1 class="h3">İsteğin işlenemedi</h1>
+        <p class="text-muted">Lütfen bilgileri kontrol edip tekrar dene.</p>
+    }
+
+    <a class="btn btn-primary" asp-controller="Home" asp-action="Index">Görev Dağılımına dön</a>
+</div>

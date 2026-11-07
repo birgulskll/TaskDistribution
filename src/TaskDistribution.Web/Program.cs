@@ -26,9 +26,13 @@ app.Services.VeritabaniniHazirla();
 
 if (!app.Environment.IsDevelopment())
 {
+    // Beklenmeyen bir hata olursa kullanıcıya teknik detay değil, sade bir hata sayfası göster
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
+
+// 404 (sayfa bulunamadı) gibi durumlarda boş sayfa yerine /Home/Durum/404 sayfasını göster
+app.UseStatusCodePagesWithReExecute("/Home/Durum/{0}");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

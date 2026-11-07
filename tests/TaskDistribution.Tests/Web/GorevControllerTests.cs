@@ -88,11 +88,4 @@ public class GorevControllerTests
         Assert.Equal("Ardışık zorluk kuralı esnetilerek atandı.", _controller.TempData[Bildirim.Uyari]);
         Assert.Null(_controller.TempData[Bildirim.Basari]);
     }
-
-    private sealed class BosTempDataProvider : ITempDataProvider
-    {
-        public IDictionary<string, object> LoadTempData(HttpContext context) => new Dictionary<string, object>();
-
-        public void SaveTempData(HttpContext context, IDictionary<string, object> values) { }
-    }
 }

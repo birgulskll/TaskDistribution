@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging.Abstractions;
 using TaskDistribution.Business.Services;
 using TaskDistribution.Data;
 using TaskDistribution.Data.Repositories;
@@ -26,7 +27,8 @@ public class GorevServiceTests : IDisposable
             new TaskItemRepository(context),
             new IslemRepository(context),
             new PersonelRepository(context),
-            new AtamaService());
+            new AtamaService(),
+            NullLogger<GorevService>.Instance);   // Testte log yazılmasına gerek yok: "hiçbir şey yapmayan" logger
     }
 
     [Fact]
