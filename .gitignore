@@ -488,3 +488,13 @@ $RECYCLE.BIN/
 *.db
 *.db-shm
 *.db-wal
+
+# Gizli bilgi içerebilecek dosyalar (repo public olduğu için)
+.env.*
+!.env.example
+secrets.json
+appsettings.Local.json
+appsettings.*.Local.json
+*.pem
+*.key
+id_rsa*
