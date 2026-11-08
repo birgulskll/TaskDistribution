@@ -75,6 +75,9 @@ dotnet ef migrations add MigrationAdi --project src/TaskDistribution.Data
 
 Algoritma [`AtamaService`](src/TaskDistribution.Business/Services/AtamaService.cs) sınıfındadır. Veritabanına bağımlı değildir; personel listesi ve görev geçmişi üzerinde çalışır. Bu sayede her kuralı ayrı ayrı test etmek kolaydır.
 
+> 📄 **Ayrı FlowChart belgesi:** [docs/atama-algoritmasi.md](docs/atama-algoritmasi.md) — adım adım açıklamalar ve örnek senaryolarla.
+> Şemanın resim hali: [docs/atama-algoritmasi.svg](docs/atama-algoritmasi.svg)
+
 ```mermaid
 flowchart TD
     A(["Yeni görev: kullanıcı bir işlem seçti"]) --> B["Zorluk = seçilen işlemin zorluğu"]
@@ -225,6 +228,9 @@ Veritabanı testleri, her test için bellekte sıfırdan oluşturulan bir SQLite
 
 ```
 TaskDistribution/
+├── docs/
+│   ├── atama-algoritmasi.md    # Atama algoritmasının ayrı FlowChart belgesi
+│   └── atama-algoritmasi.svg   # Akış şemasının resim hali
 ├── src/
 │   ├── TaskDistribution.Domain/
 │   │   ├── Constants/          # ZorlukSeviyesi, AlanUzunluklari

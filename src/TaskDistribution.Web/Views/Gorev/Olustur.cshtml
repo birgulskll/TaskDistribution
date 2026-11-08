@@ -27,7 +27,7 @@
             <div class="row g-3 mb-3">
                 <div class="col-sm-8">
                     <label asp-for="IslemId" class="form-label"></label>
-                    @* Her seçeneğe zorluğu "data-zorluk" olarak ekliyoruz; JavaScript bunu okuyup gösterecek *@
+                    @* gorev.js, seçilen işlemin zorluğunu data-* özelliklerinden okuyup gösterir *@
                     <select asp-for="IslemId" class="form-select" id="islemSecimi">
                         <option value="">-- İşlem seçin --</option>
                         @foreach (var islem in Model.Islemler)

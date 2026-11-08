@@ -117,7 +117,7 @@ public class PersonelServiceTests : IDisposable
         Assert.False(sonuc.Basarili);
     }
 
-    // ---------- Silme (CRUD'un "D" harfi) ----------
+    // ---------- Silme ----------
 
     [Fact]
     public async Task SilAsync_GorevGecmisiYoksa_PersoneliSiler()

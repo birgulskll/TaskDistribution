@@ -73,7 +73,7 @@ public class GorevService : IGorevService
 
         if (!atama.Basarili)
         {
-            // Örneğin "Sistemde aktif personel bulunmuyor." Görev KAYDEDİLMEZ.
+            // Görev kaydedilmez.
             _logger.LogWarning(
                 "Görev atanamadı: '{Baslik}' (zorluk {Zorluk}). Neden: {Mesaj}",
                 baslik, zorluk, atama.Mesaj);
@@ -94,7 +94,7 @@ public class GorevService : IGorevService
 
         await _gorevRepository.EkleAsync(gorev);
 
-        // 5. Kayıt tut (log): sorun çıktığında "hangi görev kime, neden atandı?" sorusunun cevabı
+        // 5. Atamayı logla
         if (atama.KuralEsnetildi)
         {
             _logger.LogWarning(

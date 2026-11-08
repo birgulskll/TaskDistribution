@@ -5,22 +5,18 @@ using TaskDistribution.Data;
 namespace TaskDistribution.Business;
 
 /// <summary>
-/// Business katmanının (ve altındaki Data katmanının) sınıflarını kaydeder.
-/// Web projesi sadece bu metodu çağırır; Data katmanının detaylarını bilmesine gerek kalmaz.
+/// Business ve Data katmanlarının servislerini kaydeder. Web projesi yalnızca bu metodu çağırır.
 /// </summary>
 public static class DependencyInjection
 {
     public static IServiceCollection AddBusinessLayer(this IServiceCollection services, string connectionString)
     {
-        // Önce bir alt katmanı kaydet
         services.AddDataLayer(connectionString);
 
-        // AtamaService hiçbir veri tutmuyor (sadece hesaplama yapıyor).
-        // Bu yüzden uygulama boyunca TEK bir tane yeterli: Singleton.
+        // Durum tutmayan algoritma: uygulama boyunca tek örnek yeterli.
         services.AddSingleton<IAtamaService, AtamaService>();
 
-        // Bu servisler repository'leri, onlar da DbContext'i kullanıyor.
-        // DbContext her istek için ayrı olduğundan bunlar da istek başına bir tane: Scoped.
+        // DbContext'e bağlı servisler: istek başına bir örnek.
         services.AddScoped<IPersonelService, PersonelService>();
         services.AddScoped<IIslemService, IslemService>();
         services.AddScoped<IGorevService, GorevService>();
@@ -30,8 +26,7 @@ public static class DependencyInjection
     }
 
     /// <summary>
-    /// Veritabanını kullanıma hazırlar (migration'ları uygular).
-    /// Web katmanı Data katmanını doğrudan çağırmasın diye araya konmuş bir kapı.
+    /// Bekleyen migration'ları uygular. Web katmanı Data katmanını doğrudan çağırmasın diye buradan sunulur.
     /// </summary>
     public static void VeritabaniniHazirla(this IServiceProvider serviceProvider)
     {

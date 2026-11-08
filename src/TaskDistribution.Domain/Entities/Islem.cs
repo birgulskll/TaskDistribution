@@ -7,7 +7,6 @@ namespace TaskDistribution.Domain.Entities;
 /// </summary>
 public class Islem
 {
-    // Zorluk değerini saklayan gizli alan (backing field).
     private int _zorluk = ZorlukSeviyesi.EnDusuk;
 
     public int Id { get; set; }

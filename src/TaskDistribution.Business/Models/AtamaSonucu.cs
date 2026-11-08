@@ -7,9 +7,7 @@ namespace TaskDistribution.Business.Models;
 /// </summary>
 public class AtamaSonucu
 {
-    // Constructor private: dışarıdan "new AtamaSonucu(...)" yazılamaz.
-    // Nesne sadece aşağıdaki üç hazır metotla oluşturulur, böylece çelişkili bir sonuç
-    // (örneğin hem başarısız hem de PersonelId dolu) oluşturmak imkânsız olur.
+    // Yalnızca aşağıdaki fabrika metotlarıyla oluşturulur; böylece çelişkili bir sonuç üretilemez.
     private AtamaSonucu(bool basarili, int? personelId, bool kuralEsnetildi, string mesaj)
     {
         Basarili = basarili;

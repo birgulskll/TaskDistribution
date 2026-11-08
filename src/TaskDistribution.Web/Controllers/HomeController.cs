@@ -14,7 +14,7 @@ public class HomeController : Controller
         _ozetService = ozetService;
     }
 
-    // GET / → görev dağılımı özet tablosu
+    // GET /
     public async Task<IActionResult> Index()
     {
         var ozetler = await _ozetService.PersonelOzetleriniGetirAsync();
@@ -25,7 +25,7 @@ public class HomeController : Controller
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Durum(int id)
     {
-        return View(id);   // Sayfa, durum koduna (404, 400...) göre mesaj seçer
+        return View(id);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

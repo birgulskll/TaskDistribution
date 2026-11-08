@@ -28,7 +28,7 @@ public class GorevServiceTests : IDisposable
             new IslemRepository(context),
             new PersonelRepository(context),
             new AtamaService(),
-            NullLogger<GorevService>.Instance);   // Testte log yazılmasına gerek yok: "hiçbir şey yapmayan" logger
+            NullLogger<GorevService>.Instance);
     }
 
     [Fact]

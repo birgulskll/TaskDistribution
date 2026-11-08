@@ -5,7 +5,7 @@ namespace TaskDistribution.Data;
 
 /// <summary>
 /// Sadece "dotnet ef" komutları (migration oluşturma, veritabanı güncelleme) için kullanılır.
-/// Uygulama çalışırken bu sınıf devreye girmez; Web projesi kendi ayarlarını Aşama 7'de verecek.
+/// Uygulama çalışırken kullanılmaz; Web projesi bağlantı ayarını appsettings.json dosyasından alır.
 /// </summary>
 public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
 {

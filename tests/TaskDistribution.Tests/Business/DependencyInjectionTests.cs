@@ -15,15 +15,14 @@ public class DependencyInjectionTests
         services.AddLogging();
         services.AddBusinessLayer("DataSource=:memory:");
 
-        // ValidateOnBuild: kayıtlarda eksik bir bağımlılık varsa hemen hata ver.
-        // ValidateScopes: Scoped bir servis yanlışlıkla Singleton içine konmuşsa hata ver.
+        // Eksik bağımlılık veya hatalı servis ömrü varsa hemen hata versin.
         using var provider = services.BuildServiceProvider(new ServiceProviderOptions
         {
             ValidateOnBuild = true,
             ValidateScopes = true
         });
 
-        // Act: bir web isteğini taklit eden "scope" aç ve servisleri iste
+        // Act: bir web isteği gibi scope açıp servisleri iste
         using var scope = provider.CreateScope();
 
         // Assert

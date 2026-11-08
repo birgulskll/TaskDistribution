@@ -17,7 +17,7 @@ public class Personel
     public bool AktifMi { get; set; } = true;
 
     /// <summary>
-    /// Bu personele atanmış görevler (bire-çok ilişkinin "çok" tarafı).
+    /// Bu personele atanmış görevler.
     /// </summary>
     public ICollection<TaskItem> Gorevler { get; set; } = new List<TaskItem>();
 

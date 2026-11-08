@@ -22,7 +22,6 @@ public class OzetService : IOzetService
     {
         var personeller = await _personelRepository.TumunuGorevleriyleGetirAsync();
 
-        // Her personeli bir özet satırına dönüştür (Select = "her biri için şunu üret")
         return personeller
             .Select(OzetOlustur)
             .ToList();
@@ -42,7 +41,7 @@ public class OzetService : IOzetService
             zorlukSayilari[zorluk] = gruplar.GetValueOrDefault(zorluk, 0);
         }
 
-        // Son görev: AtamaService ile birebir aynı kural (ortak GorevGecmisi sınıfından)
+        // AtamaService ile aynı "son görev" kuralı
         var sonGorev = GorevGecmisi.SonGorev(personel);
 
         return new PersonelOzeti

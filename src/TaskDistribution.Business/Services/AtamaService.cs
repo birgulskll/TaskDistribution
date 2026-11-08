@@ -7,8 +7,7 @@ namespace TaskDistribution.Business.Services;
 
 /// <summary>
 /// Görevleri personellere adil şekilde dağıtan algoritma.
-/// Veritabanını bilmez; kendisine verilen personel listesi üzerinde çalışır.
-/// Bu sayede test etmek çok kolaydır.
+/// Veritabanını bilmez; kendisine verilen personel listesi üzerinde çalışır (kolay test edilir).
 /// </summary>
 public class AtamaService : IAtamaService
 {
@@ -61,11 +60,8 @@ public class AtamaService : IAtamaService
             $"Ardışık zorluk kuralı esnetilerek görev, en az görevi olan {esnetilerekSecilen.TamAd} adlı personele atandı.");
     }
 
-    // ---------------- Yardımcı metotlar ----------------
-
     private static int? SonGorevZorlugu(Personel personel)
     {
-        // "?." operatörü: SonGorev null ise hata vermeden null döndürür.
         return GorevGecmisi.SonGorev(personel)?.Zorluk;
     }
 

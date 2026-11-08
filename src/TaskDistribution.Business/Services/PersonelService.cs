@@ -29,7 +29,6 @@ public class PersonelService : IPersonelService
 
     public async Task<ServisSonucu> EkleAsync(string? ad, string? soyad)
     {
-        // Baştaki ve sondaki boşlukları temizle; null gelirse boş metin yap.
         ad = ad?.Trim() ?? string.Empty;
         soyad = soyad?.Trim() ?? string.Empty;
 
@@ -77,7 +76,7 @@ public class PersonelService : IPersonelService
             return ServisSonucu.Hata("Personel bulunamadı.");
         }
 
-        personel.AktifMi = !personel.AktifMi;   // true ise false, false ise true yap
+        personel.AktifMi = !personel.AktifMi;
         await _personelRepository.GuncelleAsync(personel);
 
         return personel.AktifMi

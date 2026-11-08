@@ -5,7 +5,6 @@ namespace TaskDistribution.Business.Helpers;
 /// <summary>
 /// Personelin görev geçmişiyle ilgili ortak kurallar.
 /// AtamaService ve OzetService aynı "son görev" tanımını kullansın diye tek yerde duruyor.
-/// "internal": sadece Business projesinin içinden kullanılabilir, dışarıya açık değil.
 /// </summary>
 internal static class GorevGecmisi
 {

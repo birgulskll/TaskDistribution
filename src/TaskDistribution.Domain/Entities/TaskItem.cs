@@ -15,29 +15,23 @@ public class TaskItem
     public string Baslik { get; set; } = string.Empty;
 
     /// <summary>
-    /// İsteğe bağlıdır, bu yüzden boş (null) olabilir.
+    /// İsteğe bağlıdır.
     /// </summary>
     public string? Aciklama { get; set; }
 
-    // --- İşlem ilişkisi ---
-
     /// <summary>
-    /// Görevin hangi işleme ait olduğunu tutan yabancı anahtar (foreign key).
+    /// Görevin ait olduğu işlem (foreign key).
     /// </summary>
     public int IslemId { get; set; }
 
     /// <summary>
-    /// İlişkili işlem nesnesi (navigation property). Veritabanından EF Core tarafından doldurulur.
+    /// İlişkili işlem. EF Core tarafından doldurulur.
     /// </summary>
     public Islem Islem { get; set; } = null!;
-
-    // --- Personel ilişkisi ---
 
     public int AtananPersonelId { get; set; }
 
     public Personel AtananPersonel { get; set; } = null!;
-
-    // --- Diğer bilgiler ---
 
     /// <summary>
     /// Görev oluşturulduğu andaki işlem zorluğunun kopyası.

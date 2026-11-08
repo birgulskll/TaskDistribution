@@ -9,7 +9,6 @@ public class AppDbContextTests : IDisposable
 {
     private readonly SqliteTestVeritabani _veritabani = new();
 
-    // xUnit her testten sonra Dispose'u çağırır; böylece her test temiz bir veritabanıyla başlar.
     public void Dispose() => _veritabani.Dispose();
 
     [Fact]

@@ -51,13 +51,11 @@ public class GorevController : Controller
 
         if (!sonuc.Basarili)
         {
-            // Örnek: "Sistemde aktif personel bulunmuyor." → kırmızı kutu, görev kaydedilmedi
             ModelState.AddModelError(string.Empty, sonuc.Mesaj);
             await IslemleriDoldurAsync(model);
             return View(model);
         }
 
-        // Kural esnetildiyse sarı uyarı, değilse yeşil başarı mesajı
         TempData[sonuc.UyariVar ? Bildirim.Uyari : Bildirim.Basari] = sonuc.Mesaj;
         return RedirectToAction(nameof(Index));
     }

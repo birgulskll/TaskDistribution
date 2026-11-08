@@ -6,7 +6,7 @@ using TaskDistribution.Web.ViewModels;
 namespace TaskDistribution.Web.Controllers;
 
 /// <summary>
-/// Personel sayfaları. Dikkat: DbContext veya repository YOK; sadece IPersonelService kullanılıyor.
+/// Personel CRUD sayfaları. Yalnızca IPersonelService kullanır.
 /// </summary>
 public class PersonelController : Controller
 {
@@ -24,24 +24,22 @@ public class PersonelController : Controller
         return View(personeller);
     }
 
-    // GET /Personel/Ekle → boş formu göster
+    // GET /Personel/Ekle
     public IActionResult Ekle()
     {
         return View(new PersonelFormViewModel());
     }
 
-    // POST /Personel/Ekle → formdan gelen veriyi kaydet
+    // POST /Personel/Ekle
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Ekle(PersonelFormViewModel model)
     {
-        // 1. Formdaki [Required], [StringLength] kuralları sağlanmadıysa formu hatalarla geri göster
         if (!ModelState.IsValid)
         {
             return View(model);
         }
 
-        // 2. Asıl iş kuralları Business katmanında
         var sonuc = await _personelService.EkleAsync(model.Ad, model.Soyad);
 
         if (!sonuc.Basarili)
@@ -50,7 +48,7 @@ public class PersonelController : Controller
             return View(model);
         }
 
-        // 3. Başarılı: mesajı TempData'ya koy ve listeye yönlendir (Post-Redirect-Get)
+        // Post-Redirect-Get: mesaj TempData ile listeye taşınır
         TempData[Bildirim.Basari] = sonuc.Mesaj;
         return RedirectToAction(nameof(Index));
     }
@@ -96,7 +94,7 @@ public class PersonelController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    // GET /Personel/Sil/5 → "Emin misiniz?" onay sayfası (henüz hiçbir şey silinmez)
+    // GET /Personel/Sil/5 (onay sayfası)
     public async Task<IActionResult> Sil(int id)
     {
         var personel = await _personelService.GetirAsync(id);
@@ -108,9 +106,8 @@ public class PersonelController : Controller
         return View(personel);
     }
 
-    // POST /Personel/Sil/5 → onaylandıktan sonra asıl silme
-    // C#'ta aynı parametrelerle (int id) iki "Sil" metodu yazılamaz. Bu yüzden metodun adı SilOnayla,
-    // ama [ActionName("Sil")] sayesinde adresi yine /Personel/Sil/5.
+    // POST /Personel/Sil/5
+    // Aynı imzalı iki "Sil" metodu olamayacağı için adı SilOnayla; [ActionName] ile adres değişmez.
     [HttpPost]
     [ActionName("Sil")]
     [ValidateAntiForgeryToken]
@@ -122,7 +119,7 @@ public class PersonelController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    // POST /Personel/AktiflikDegistir/5 → aktif ise pasif, pasif ise aktif yap
+    // POST /Personel/AktiflikDegistir/5
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AktiflikDegistir(int id)
